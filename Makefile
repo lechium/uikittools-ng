@@ -1,7 +1,11 @@
-CC = xcrun -sdk iphoneos clang -arch arm64 -miphoneos-version-min=11.0
-LDID = ldid
+#CC = xcrun -sdk iphoneos clang -arch arm64 -miphoneos-version-min=11.0
+CC = xcrun -sdk appletvos clang -arch arm64 -mappletvos-version-min=10.0
 
-all: cfversion gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
+LDID = ldid2
+
+#all: cfversion gssc ldrestart sbdidlaunch sbreload uicache uiduid uiopen
+
+all: cfversion gssc ldrestart sbreload uicache uiduid uiopen
 
 cfversion: cfversion.c ent.plist
 	$(CC) cfversion.c -o cfversion -framework CoreFoundation -O3
@@ -13,10 +17,10 @@ gssc: gssc.m gssc.plist
 	strip gssc
 	$(LDID) -Sgssc.plist gssc
 
-ldrestart: ldrestart.c ent.plist
-	$(CC) ldrestart.c -o ldrestart -I. -O3
+ldrestart: ldrestart.m ent.plist
+	$(CC) ldrestart.m -o ldrestart -I. -O3 -framework Foundation -framework PineBoardServices -framework IOKit -undefined dynamic_lookup
 	strip ldrestart
-	$(LDID) -Sent.plist ldrestart
+	$(LDID) -Sldrestart.plist ldrestart
 
 sbdidlaunch: sbdidlaunch.c ent.plist
 	$(CC) sbdidlaunch.c -o sbdidlaunch -framework CoreFoundation -O3
@@ -44,4 +48,4 @@ uiopen: uiopen.m ent.plist
 	$(LDID) -Suiopen.plist uiopen
 
 clean:
-	rm cfversion sbdidlaunch sbreload uicache uiduid uiopen
+	rm cfversion sbdidlaunch sbreload uicache uiduid uiopen ldrestart

@@ -155,8 +155,8 @@ int main(int argc, char *argv[]){
 			NSString *rawPath = [NSString stringWithUTF8String:path];
 			rawPath = [rawPath stringByResolvingSymlinksInPath];
 			if (![[rawPath stringByDeletingLastPathComponent] isEqualToString:@"/Applications"]){
-				fprintf(stderr, "Error: Application must be a system application!\n");
-				return -1;
+				fprintf(stderr, "Warning: Application should be a system application!\n");
+				//return -1;
 			}
 
 			NSDictionary *infoPlist = [NSDictionary dictionaryWithContentsOfFile:[rawPath stringByAppendingPathComponent:@"Info.plist"]];
